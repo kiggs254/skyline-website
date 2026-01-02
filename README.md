@@ -1,60 +1,87 @@
-# Skyline Savannah Tours API
+# Skyline Savannah Tours
 
-This is the backend API for the Skyline Savannah Tours application. It handles user authentication, bookings, data retrieval (packages, destinations, etc.), and email notifications.
+This is a complete travel agency application featuring a modern React frontend and a robust PHP backend. It includes an AI-powered trip planner, dynamic tour packages, and a comprehensive booking system.
 
 ## Project Overview
 
-The project consists of a single PHP file (`api.php`) that acts as a RESTful API. It connects to a MySQL database to store and retrieve data. The frontend application communicates with this API to function.
+**Skyline Savannah Tours** connects travelers with unforgettable African experiences. The application allows users to explore destinations, view detailed tour packages, and book trips effortlessly.
+
+### Key Features
+- **AI-Powered Trip Planner**: Generates personalized itineraries based on user preferences using Gemini/OpenAI.
+- **Dynamic Tour Packages**: Browse safaris, beach holidays, and luxury escapes with rich media galleries.
+- **Booking System**: Seamless inquiry and booking flow with email notifications.
+- **Admin Dashboard**: Manage bookings, specific travel plans, and site settings.
+- **Newsletter Subscription**: Auto-verification logic to handle subscriber limits.
+- **Responsive Design**: Mobile-first, cinematic UI with smooth animations.
+
+## Tech Stack
+
+### Frontend
+- **Framework**: React 18 (Vite)
+- **Styling**: Tailwind CSS (presumed based on usage) & Custom CSS
+- **Icons**: Lucide React
+- **Routing**: React Router DOM
+
+### Backend
+- **Language**: PHP 7.4+
+- **Database**: MySQL 5.7+
+- **Authentication**: JWT (JSON Web Tokens)
+- **Email**: SMTP integration
 
 ## Setup Instructions
 
-### Pre-requisites
-- **PHP**: 7.4 or higher.
-- **MySQL**: 5.7 or higher.
-- **Web Server**: Apache or Nginx.
+### 1. Backend Setup
+The backend handles data persistence and API logic.
 
-### 1. Database Setup
-1. Create a MySQL database (e.g., `skyline_db`).
-2. The API will automatically create the necessary tables (`admins`, `bookings`, `subscribers`, `generated_plans`, etc.) upon the first request (e.g., login or get_all_data), implementing a self-healing schema.
+1. **Database**: Create a MySQL database (e.g., `skyline_db`). The system will automatically create tables on the first run.
+2. **Environment & Secrets**:
+    - Rename `.env.example` to `.env` in the root directory.
+    - Update the values with your local configuration:
+      ```ini
+      DB_HOST=localhost
+      DB_USER=your_db_user
+      DB_PASS=your_db_password
+      DB_NAME=skyline_db
+      JWT_SECRET=your_secure_random_string
+      ```
+3. **Server**: Ensure your web server (Apache/Nginx) is pointing to the project root and `api.php` is accessible.
 
-### 2. Environment Configuration
-1. Rename `.env.example` to `.env`:
+### 2. Frontend Setup
+The frontend is a Vite-based React application.
+
+1. **Install Dependencies**:
    ```bash
-   mv .env.example .env
+   npm install
    ```
-2. Open `.env` and fill in your database credentials and secret keys:
-   ```ini
-   DB_HOST=localhost
-   DB_USER=your_db_user
-   DB_PASS=your_db_password
-   DB_NAME=skyline_db
-   JWT_SECRET=your_secure_random_string
+2. **Development Server**:
+   ```bash
+   npm run dev
    ```
+   Access the app at `http://localhost:5173`.
 
-### 3. Server Configuration
-- Ensure your web server points to the project directory.
-- For Apache, ensure `mod_rewrite` is enabled if you plan to use clean URLs (though the current setup works with query parameters).
-- Ensure the `uploads` directory is writable by the web server user.
+3. **Production Build**:
+   ```bash
+   npm run build
+   ```
+   The output will be in the `dist` folder.
 
-## API Usage
+## API Documentation
 
-### Endpoints
+The `api.php` file acts as the single entry point for all backend operations.
 
-- **GET /?action=get\_all\_data**: Fetches all public data (packages, destinations, services, etc.).
-- **POST /?action=login**: Admin login. Requires `username` and `password`.
-- **POST /?action=create\_booking**: Creates a new booking.
-- **POST /?action=add\_subscriber**: Adds a newsletter subscriber.
-- **POST /?action=save\_plan**: Saves an AI-generated travel plan.
-- **GET /?action=check\_ai\_usage&email=...**: Checks AI plan usage limit for an email.
+### Public Endpoints
+- `GET /api.php?action=get_all_data`: Fetch all content (tours, destinations, etc.).
+- `POST /api.php?action=create_booking`: Submit a new booking.
+- `GET /api.php?action=check_ai_usage`: Check if a user is allowed to generate more AI plans.
 
-### Protected Endpoints (Require Bearer Token)
-- **GET /?action=get\_admin\_data**: Fetches admin dashboard data.
-- **POST /?action=crud**: Generic CRUD operations for managed tables.
-- **POST /?action=upload\_file**: Uploads an image.
-- **POST /?action=update\_settings**: Updates site settings (SMTP, etc.).
-- **POST /?action=change\_password**: Changes admin password.
-- **POST /?action=send\_test\_email**: Sends a test email using configured SMTP settings.
+### Protected Endpoints (Admin)
+- `POST /api.php?action=login`: Admin authentication.
+- `GET /api.php?action=get_admin_data`: Fetch dashboard statistics.
+- `POST /api.php?action=crud`: Generic create/read/update/delete for any table.
 
-## Security Note
-- Never commit your `.env` file to version control.
-- Change the `JWT_SECRET` to a strong, random string in production.
+## Deployment
+- **Frontend**: Can be deployed to Netlify, Vercel, or any static host.
+- **Backend**: Requires a PHP/MySQL hosting environment.
+
+## License
+Private property of Skyline Savannah Tours.
