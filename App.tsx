@@ -117,37 +117,28 @@ const ScrollToTop = () => {
   return null;
 };
 
-// --- Animation Wrapper Component ---
+// --- Loader Component ---
+const Loader = () => {
+  return (
+    <div className="fixed inset-0 bg-white z-[9999] flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-16 h-16 border-4 border-brand-green border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <p className="text-brand-green font-semibold">Loading...</p>
+      </div>
+    </div>
+  );
+};
+
+// --- Animation Wrapper Component (No longer animated) ---
 interface RevealOnScrollProps {
   children: React.ReactNode;
   className?: string;
   delay?: number;
 }
 
-const RevealOnScroll: React.FC<RevealOnScrollProps> = ({ children, className = "", delay = 0 }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = React.useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
+const RevealOnScroll: React.FC<RevealOnScrollProps> = ({ children, className = "" }) => {
   return (
-    <div 
-      ref={ref} 
-      className={`${className} transition-opacity duration-300 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-      style={{ transitionDelay: `${delay}ms`, transform: isVisible ? 'translateY(0)' : 'translateY(16px)' }}
-    >
+    <div className={className}>
       {children}
     </div>
   );
@@ -488,7 +479,7 @@ const TripFinderWidget = () => {
   const safeDestinations = Array.isArray(destinations) ? destinations.filter(d => d) : [];
 
   return (
-    <form onSubmit={handleSearch} className="bg-white rounded-2xl md:rounded-3xl shadow-2xl p-3 md:p-4 flex flex-col md:flex-row gap-3 md:gap-4 items-center max-w-5xl mx-auto border border-gray-100 animate-fade-in-up delay-300">
+    <form onSubmit={handleSearch} className="bg-white rounded-2xl md:rounded-3xl shadow-2xl p-3 md:p-4 flex flex-col md:flex-row gap-3 md:gap-4 items-center max-w-5xl mx-auto border border-gray-100">
       
       <div className="flex-1 w-full border-b md:border-b-0 md:border-r border-gray-100 pb-2 md:pb-0 px-2 md:px-4">
         <label className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">
@@ -573,13 +564,13 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-10 w-full px-4 text-center py-10 md:py-0">
         <div className="max-w-5xl mx-auto">
-            <p className="text-brand-orange font-bold uppercase tracking-[0.2em] mb-2 md:mb-4 text-xs md:text-base animate-fade-in">
+            <p className="text-brand-orange font-bold uppercase tracking-[0.2em] mb-2 md:mb-4 text-xs md:text-base">
               Welcome to {settings.siteName || 'Skyline'}
             </p>
-            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-white mb-4 md:mb-6 leading-tight drop-shadow-2xl animate-fade-in-up">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-white mb-4 md:mb-6 leading-tight drop-shadow-2xl">
               {hero.title || "The Spirit of Africa"}
             </h1>
-            <p className="text-base sm:text-lg md:text-2xl text-gray-200 font-light max-w-2xl mx-auto mb-8 md:mb-12 leading-relaxed drop-shadow-md animate-fade-in delay-200 px-2">
+            <p className="text-base sm:text-lg md:text-2xl text-gray-200 font-light max-w-2xl mx-auto mb-8 md:mb-12 leading-relaxed drop-shadow-md px-2">
               {hero.subtitle || "Curated safaris, pristine beaches, and unforgettable memories tailored just for you."}
             </p>
             
@@ -597,7 +588,7 @@ const Hero = () => {
       >
          <span className="text-white text-[10px] uppercase tracking-widest">Scroll to Explore</span>
          <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center p-1">
-            <div className="w-1 h-2 bg-white rounded-full animate-bounce-slow"></div>
+            <div className="w-1 h-2 bg-white rounded-full"></div>
          </div>
       </div>
     </div>
@@ -738,7 +729,7 @@ const FloatingWhatsApp = () => {
       href={`https://wa.me/${settings.whatsapp}`} 
       target="_blank" 
       rel="noreferrer"
-      className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl transition-opacity hover:opacity-90 flex items-center justify-center border-2 border-white"
+      className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl transition-opacity hover:opacity-90 flex items-center justify-center border-2 border-white animate-bounce-slow"
     >
       <Phone className="w-6 h-6 fill-current" />
     </a>
@@ -820,7 +811,7 @@ const AITripPlanner = () => {
           <RevealOnScroll className="w-full lg:w-1/2">
             <div className="mb-10">
               <span className="text-brand-orange font-bold tracking-[0.2em] uppercase text-sm mb-3 block flex items-center gap-2">
-                <Sparkles size={16} className="animate-pulse" /> The Dream Weaver
+                <Sparkles size={16} /> The Dream Weaver
               </span>
               <h2 className="text-4xl md:text-6xl font-serif font-bold mb-6 leading-tight">
                 Design Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-yellow-300">Perfect Safari</span>
@@ -834,7 +825,7 @@ const AITripPlanner = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               
               {!isVerified ? (
-                  <div className="space-y-6 relative z-10 animate-fade-in">
+                  <div className="space-y-6 relative z-10">
                       <p className="text-gray-400 text-sm">To access the AI planner, please verify your email.</p>
                       <form onSubmit={handleVerifyEmail} className="space-y-4">
                           <input 
@@ -852,7 +843,7 @@ const AITripPlanner = () => {
                       </form>
                   </div>
               ) : (
-                  <form onSubmit={handleSubmit} className="space-y-5 relative z-10 animate-fade-in">
+                  <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
                       <div>
                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Destination</label>
                         <input 
@@ -1304,8 +1295,69 @@ const AboutUsSection = () => {
 const HomePage = () => {
   // Helper to get initials for avatar
   const getInitials = (name: string) => name.split(' ').map(n => n[0]).join('').substring(0, 2);
-  const { testimonials } = useData();
+  const { testimonials, settings, destinations, packages } = useData();
   const safeTestimonials = Array.isArray(testimonials) ? testimonials : [];
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [loadedImagesCount, setLoadedImagesCount] = useState(0);
+  const imagesToLoad = useRef<string[]>([]);
+  const totalImagesToLoad = useRef(0);
+
+  // Collect images to load
+  useEffect(() => {
+    const images: string[] = [];
+    
+    // Hero fallback image
+    const hero = settings.hero;
+    if (hero && hero.fallbackImage) images.push(hero.fallbackImage);
+    
+    // First 3 destination images
+    const firstDestinations = (destinations || []).slice(0, 3);
+    firstDestinations.forEach(dest => {
+      if (dest.image) images.push(dest.image);
+    });
+    
+    // First 3 package images
+    const firstPackages = (packages || []).slice(0, 3);
+    firstPackages.forEach(pkg => {
+      const pkgImages = (pkg.images && Array.isArray(pkg.images) && pkg.images.length > 0) 
+        ? pkg.images 
+        : (pkg.image ? [pkg.image] : []);
+      if (pkgImages.length > 0) images.push(pkgImages[0]);
+    });
+    
+    imagesToLoad.current = images;
+    totalImagesToLoad.current = images.length;
+    
+    if (images.length === 0) {
+      setImagesLoaded(true);
+      return;
+    }
+    
+    // Load images
+    let loaded = 0;
+    images.forEach(src => {
+      const img = new Image();
+      img.onload = () => {
+        loaded++;
+        setLoadedImagesCount(loaded);
+        if (loaded === images.length) {
+          setTimeout(() => setImagesLoaded(true), 300);
+        }
+      };
+      img.onerror = () => {
+        loaded++;
+        setLoadedImagesCount(loaded);
+        if (loaded === images.length) {
+          setTimeout(() => setImagesLoaded(true), 300);
+        }
+      };
+      img.src = src;
+    });
+  }, [settings, destinations, packages]);
+
+  if (!imagesLoaded) {
+    return <Loader />;
+  }
 
   return (
     <>
