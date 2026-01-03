@@ -2433,15 +2433,9 @@ const DestinationDetailsPage = () => {
                                 <p className="text-xs text-gray-400 uppercase font-bold mb-1">Known For</p>
                                 <p className="font-medium text-lg leading-snug">{destination.description}</p>
                             </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <p className="text-xs text-gray-400 uppercase font-bold mb-1">Best Time</p>
-                                    <p className="font-bold text-brand-orange">June - Oct</p>
-                                </div>
-                                <div>
-                                    <p className="text-xs text-gray-400 uppercase font-bold mb-1">Ideal Stay</p>
-                                    <p className="font-bold text-brand-orange">3 - 5 Days</p>
-                                </div>
+                            <div>
+                                <p className="text-xs text-gray-400 uppercase font-bold mb-1">Ideal Stay</p>
+                                <p className="font-bold text-brand-orange">3 - 5 Days</p>
                             </div>
                         </div>
                         <div className="mt-8 pt-6 border-t border-white/10">
