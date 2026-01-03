@@ -117,17 +117,6 @@ const ScrollToTop = () => {
   return null;
 };
 
-// --- Loader Component ---
-const Loader = () => {
-  return (
-    <div className="fixed inset-0 bg-white z-[9999] flex items-center justify-center">
-      <div className="text-center">
-        <div className="w-16 h-16 border-4 border-brand-green border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-brand-green font-semibold">Loading...</p>
-      </div>
-    </div>
-  );
-};
 
 // --- Animation Wrapper Component (No longer animated) ---
 interface RevealOnScrollProps {
@@ -1356,7 +1345,16 @@ const HomePage = () => {
   }, [settings, destinations, packages]);
 
   if (!imagesLoaded) {
-    return <Loader />;
+    return (
+      <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-brand-green">
+        <div className="flex space-x-2 mb-4">
+           <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+           <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+           <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+        </div>
+        <p className="text-white font-serif text-xl tracking-widest uppercase animate-pulse">Loading Adventure</p>
+      </div>
+    );
   }
 
   return (
