@@ -145,8 +145,8 @@ const RevealOnScroll: React.FC<RevealOnScrollProps> = ({ children, className = "
   return (
     <div 
       ref={ref} 
-      className={`${className} transition-all duration-700 cubic-bezier(0.17, 0.55, 0.55, 1) transform ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-95'}`}
-      style={{ transitionDelay: `${delay}ms` }}
+      className={`${className} transition-opacity duration-300 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+      style={{ transitionDelay: `${delay}ms`, transform: isVisible ? 'translateY(0)' : 'translateY(16px)' }}
     >
       {children}
     </div>
@@ -185,7 +185,7 @@ const PackageCard: React.FC<{ pkg: Package }> = ({ pkg }) => {
   return (
     <Link to={`/tours/${pkg.id}`} className="block h-full">
       <div 
-        className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 h-96 w-full"
+        className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-200 h-96 w-full"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -194,7 +194,7 @@ const PackageCard: React.FC<{ pkg: Package }> = ({ pkg }) => {
            <img 
             src={images[currentImg]} 
             alt={pkg.title} 
-            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+            className="w-full h-full object-cover transition-opacity duration-300" 
           />
            
            {/* Carousel Controls */}
@@ -281,12 +281,12 @@ const DestinationCard = ({ destination }: { destination: Destination }) => {
     : 0;
 
   return (
-    <Link to={`/destinations/${destination.id}`} className="group block rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300">
+    <Link to={`/destinations/${destination.id}`} className="group block rounded-2xl overflow-hidden shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
       <div className="relative h-96">
         <img 
           src={destination.image} 
           alt={destination.name} 
-          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" 
+          className="w-full h-full object-cover transition-opacity duration-300" 
           onError={(e: any) => e.target.src = 'https://placehold.co/800x600?text=Image'} 
         />
         
@@ -393,7 +393,7 @@ const Navbar = () => {
           {/* Logo Construction */}
           <Link to="/" className="flex items-center gap-3 group" onClick={() => setIsOpen(false)}>
             {activeLogo ? (
-              <img src={activeLogo} alt={settings.siteName} className={`w-auto object-contain transition-all duration-500 ${scrolled ? 'h-12' : 'h-16'}`} />
+              <img src={activeLogo} alt={settings.siteName} className={`w-auto object-contain transition-all duration-300 ${scrolled ? 'h-12' : 'h-16'}`} />
             ) : (
               <div className="flex items-center gap-2">
                 <div className={`flex items-center justify-center border-2 rounded-lg p-1 transition-all duration-300 ${scrolled ? 'w-10 h-10 border-brand-green' : 'w-12 h-12 border-white'}`}>
@@ -424,7 +424,7 @@ const Navbar = () => {
               </Link>
             ))}
             <Link to="/contact">
-              <button className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 shadow-lg hover:scale-105 ${buttonClass}`}>
+              <button className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-200 shadow-lg ${buttonClass}`}>
                   Get a Quote
               </button>
             </Link>
@@ -441,7 +441,7 @@ const Navbar = () => {
       </nav>
 
       {/* Full Screen Mobile Menu Overlay - OUTSIDE nav to avoid transform clipping */}
-      <div className={`fixed inset-0 bg-brand-dark/95 backdrop-blur-xl z-[49] transition-all duration-500 flex flex-col justify-center items-center ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}>
+      <div className={`fixed inset-0 bg-brand-dark/95 backdrop-blur-xl z-[49] transition-all duration-300 flex flex-col justify-center items-center ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}>
         {/* Close button inside overlay for safety, though the main toggle works too */}
         <button className="absolute top-6 right-6 text-white p-2" onClick={() => setIsOpen(false)}>
            <X size={32} />
@@ -453,7 +453,7 @@ const Navbar = () => {
                 key={link.name} 
                 to={link.path}
                 onClick={() => setIsOpen(false)}
-                className="text-3xl font-serif font-bold text-white hover:text-brand-orange transition-all transform hover:scale-110"
+                className="text-3xl font-serif font-bold text-white hover:text-brand-orange transition-colors"
                 style={{ transitionDelay: `${idx * 50}ms` }}
               >
                 {link.name}
@@ -534,7 +534,7 @@ const TripFinderWidget = () => {
       </div>
 
       <button type="submit" className="w-full md:w-auto bg-brand-green text-white h-12 md:h-14 px-8 rounded-xl md:rounded-2xl font-bold text-lg hover:bg-green-800 transition-all shadow-lg flex items-center justify-center gap-2 group">
-         <Search size={20} className="group-hover:scale-110 transition-transform"/> 
+         <Search size={20} className="transition-opacity"/> 
          <span className="md:hidden">Search</span>
       </button>
     </form>
@@ -597,7 +597,7 @@ const Hero = () => {
       >
          <span className="text-white text-[10px] uppercase tracking-widest">Scroll to Explore</span>
          <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center p-1">
-            <div className="w-1 h-2 bg-white rounded-full animate-bounce"></div>
+            <div className="w-1 h-2 bg-white rounded-full animate-bounce-slow"></div>
          </div>
       </div>
     </div>
@@ -647,13 +647,13 @@ const Footer = () => {
         </div>
         <p className="text-gray-500 mb-8 leading-relaxed text-sm">Local & International Travel Made Easy. Discover, Explore, and Experience the world with us.</p>
         <div className="flex gap-4">
-          <a href={settings.socials.instagram} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-brand-light text-brand-green flex items-center justify-center hover:bg-brand-green hover:text-white transition-all cursor-pointer hover:scale-110">
+          <a href={settings.socials.instagram} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-brand-light text-brand-green flex items-center justify-center hover:bg-brand-green hover:text-white transition-colors cursor-pointer">
              <Instagram size={20} />
           </a>
-          <a href={settings.socials.facebook} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-brand-light text-brand-green flex items-center justify-center hover:bg-brand-green hover:text-white transition-all cursor-pointer hover:scale-110">
+          <a href={settings.socials.facebook} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-brand-light text-brand-green flex items-center justify-center hover:bg-brand-green hover:text-white transition-colors cursor-pointer">
              <Facebook size={20} />
           </a>
-          <a href={settings.socials.twitter} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-brand-light text-brand-green flex items-center justify-center hover:bg-brand-green hover:text-white transition-all cursor-pointer hover:scale-110">
+          <a href={settings.socials.twitter} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-brand-light text-brand-green flex items-center justify-center hover:bg-brand-green hover:text-white transition-colors cursor-pointer">
              <Twitter size={20} />
           </a>
         </div>
@@ -738,7 +738,7 @@ const FloatingWhatsApp = () => {
       href={`https://wa.me/${settings.whatsapp}`} 
       target="_blank" 
       rel="noreferrer"
-      className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center justify-center border-2 border-white animate-bounce-slow"
+      className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl transition-opacity hover:opacity-90 flex items-center justify-center border-2 border-white"
     >
       <Phone className="w-6 h-6 fill-current" />
     </a>
@@ -831,7 +831,7 @@ const AITripPlanner = () => {
             </div>
 
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl relative overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               
               {!isVerified ? (
                   <div className="space-y-6 relative z-10 animate-fade-in">
@@ -965,7 +965,7 @@ const AITripPlanner = () => {
                       {plan.itinerary.map((day) => (
                         <div key={day.day} className="flex gap-5 group">
                            <div className="flex-col items-center hidden sm:flex">
-                              <div className="w-10 h-10 bg-brand-green text-white rounded-full flex items-center justify-center font-bold shadow-md group-hover:scale-110 transition-transform z-10">
+                              <div className="w-10 h-10 bg-brand-green text-white rounded-full flex items-center justify-center font-bold shadow-md transition-opacity z-10">
                                 {day.day}
                               </div>
                               <div className="w-0.5 h-full bg-gray-200 -mt-2 -mb-4"></div>
@@ -1023,9 +1023,9 @@ const TestimonialsSection = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
                 {safeTestimonials.map((t, index) => (
                     <RevealOnScroll key={t.id} delay={index * 100}>
-                        <div className="bg-white p-8 rounded-tr-[3rem] rounded-bl-[3rem] rounded-tl-xl rounded-br-xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-stone-100 relative group h-full flex flex-col">
+                        <div className="bg-white p-8 rounded-tr-[3rem] rounded-bl-[3rem] rounded-tl-xl rounded-br-xl shadow-xl hover:shadow-xl transition-all duration-200 hover:-translate-y-1 border border-stone-100 relative group h-full flex flex-col">
                             {/* Decorative Quote Icon */}
-                            <div className="absolute -top-6 -right-4 bg-brand-orange text-white p-4 rounded-full shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <div className="absolute -top-6 -right-4 bg-brand-orange text-white p-4 rounded-full shadow-lg transition-opacity duration-200">
                                 <Quote size={24} fill="currentColor" />
                             </div>
 
@@ -1058,7 +1058,7 @@ const TestimonialsSection = () => {
             <RevealOnScroll delay={300}>
                 <div className="mt-20 pt-10 border-t border-stone-200/60 text-center">
                     <p className="text-stone-400 text-sm font-bold uppercase tracking-widest mb-6">Trusted By Travelers On</p>
-                    <div className="flex justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                    <div className="flex justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-300">
                         {/* Simulated Logos with text/icons for demo purposes */}
                         <div className="flex items-center gap-2 font-bold text-2xl text-[#00AA6C]"><span className="w-8 h-8 rounded-full bg-[#00AA6C]"></span> TripAdvisor</div>
                         <div className="flex items-center gap-2 font-bold text-2xl text-[#4285F4]"><span className="text-2xl">G</span> Google Reviews</div>
@@ -1202,7 +1202,7 @@ const LatestPosts = () => {
                             <Link to={`/blog/${post.slug}`} className="group block h-full">
                                 <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 h-full flex flex-col">
                                     <div className="h-48 overflow-hidden relative">
-                                        <img src={post.featured_image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                        <img src={post.featured_image} alt={post.title} className="w-full h-full object-cover transition-opacity duration-300" />
                                         <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-brand-green shadow-sm">
                                             {new Date(post.created_at).toLocaleDateString()}
                                         </div>
@@ -1238,7 +1238,7 @@ const AboutUsSection = () => {
           <RevealOnScroll>
             <div className="relative h-[500px] flex items-center justify-center">
               {/* Image 1 (Back, Angled) */}
-              <div className="absolute w-[60%] h-[70%] top-0 left-0 bg-white p-3 rounded-2xl shadow-xl transform -rotate-12 transition-transform duration-500 hover:rotate-0 hover:scale-105">
+              <div className="absolute w-[60%] h-[70%] top-0 left-0 bg-white p-3 rounded-2xl shadow-xl transform -rotate-12 transition-transform duration-300 hover:rotate-0">
                 <img 
                   src={about.image1_url} 
                   alt="Safari adventure" 
@@ -1247,7 +1247,7 @@ const AboutUsSection = () => {
                 />
               </div>
               {/* Image 2 (Front, Straight) */}
-              <div className="relative w-[70%] h-[80%] bg-white p-4 rounded-2xl shadow-2xl transition-transform duration-500 hover:scale-105 z-10">
+              <div className="relative w-[70%] h-[80%] bg-white p-4 rounded-2xl shadow-2xl transition-opacity duration-300 z-10">
                 <img 
                   src={about.image2_url} 
                   alt="Zebras in the wild" 
@@ -1396,7 +1396,7 @@ const AboutPage = () => {
         </RevealOnScroll>
         <div className="flex flex-col md:flex-row gap-12 items-center mb-20">
           <RevealOnScroll className="w-full md:w-1/2">
-            <img src={about.imageUrl} alt="Our Team" className="rounded-xl shadow-xl border-4 border-brand-light hover:scale-[1.02] transition-transform duration-500" />
+            <img src={about.imageUrl} alt="Our Team" className="rounded-xl shadow-xl border-4 border-brand-light transition-opacity duration-300" />
           </RevealOnScroll>
           <RevealOnScroll delay={200} className="w-full md:w-1/2">
             <p className="text-gray-600 mb-4 leading-relaxed text-lg">
@@ -1471,7 +1471,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
         <img 
           src={service.image} 
           alt={service.title} 
-          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" 
+          className="w-full h-full object-cover transition-opacity duration-300" 
           onError={(e: any) => e.target.src = 'https://placehold.co/800x600?text=Service'} 
         />
         
@@ -1898,7 +1898,7 @@ const PackageDetailsPage = () => {
           {images.map((img, idx) => (
              <div
                key={idx}
-               className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${idx === currentImgIndex ? 'opacity-100' : 'opacity-0'}`}
+               className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${idx === currentImgIndex ? 'opacity-100' : 'opacity-0'}`}
              >
                 <img src={img} alt={pkg.title} className="w-full h-full object-cover" />
                 {/* Cinematic Gradient Overlay - Stronger at bottom */}
@@ -1979,7 +1979,7 @@ const PackageDetailsPage = () => {
                   <div className="relative pl-4 md:pl-8 border-l-2 border-brand-light space-y-12">
                      {pkg.detailedItinerary && pkg.detailedItinerary.map((day, idx) => (
                        <div key={day.day} className="relative group">
-                         <div className="absolute -left-[25px] md:-left-[41px] top-0 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white border-4 border-brand-green flex items-center justify-center shadow-md z-10 group-hover:scale-110 transition-transform">
+                         <div className="absolute -left-[25px] md:-left-[41px] top-0 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white border-4 border-brand-green flex items-center justify-center shadow-md z-10 transition-opacity">
                            <span className="text-xs font-bold text-brand-green">{day.day}</span>
                          </div>
                          <div className="bg-gray-50 rounded-xl p-6 hover:shadow-md transition-shadow border border-gray-100">
@@ -2213,7 +2213,7 @@ const DestinationDetailsPage = () => {
              const parts = cleanLine.split(/(\*\*.*?\*\*)/g);
              return (
                <li key={i} className="flex items-start gap-3 mb-3 text-gray-700 text-base leading-relaxed group">
-                  <span className={`mt-2 w-1.5 h-1.5 rounded-full bg-brand-orange shrink-0 group-hover:scale-150 transition-transform`}></span>
+                  <span className={`mt-2 w-1.5 h-1.5 rounded-full bg-brand-orange shrink-0 transition-opacity`}></span>
                   <span>
                     {parts.map((part, j) => {
                         if (part.startsWith('**') && part.endsWith('**')) {
@@ -2268,7 +2268,7 @@ const DestinationDetailsPage = () => {
             <img 
               src={destination.image} 
               alt={destination.name} 
-              className="w-full h-full object-cover transition-transform duration-1000 hover:scale-105" 
+              className="w-full h-full object-cover transition-opacity duration-300" 
               onError={(e: any) => e.target.src = 'https://placehold.co/1200x600?text=Destination'} 
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/90"></div>
@@ -2397,7 +2397,7 @@ const DestinationDetailsPage = () => {
                         <div className="mt-8 pt-6 border-t border-white/10">
                             <Link to="/contact" className="flex items-center justify-between group">
                                 <span className="font-bold">Plan a Trip Here</span>
-                                <div className="w-8 h-8 rounded-full bg-brand-green flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <div className="w-8 h-8 rounded-full bg-brand-green flex items-center justify-center transition-opacity">
                                     <ArrowRight size={16} />
                                 </div>
                             </Link>
@@ -2442,21 +2442,21 @@ const CreativeDestinationCard: React.FC<{ destination: Destination; size?: "norm
   return (
     <Link 
       to={`/destinations/${destination.id}`} 
-      className={`group relative block rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 ${gridClass} min-h-[300px]`}
+      className={`group relative block rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 ${gridClass} min-h-[300px]`}
     >
       <img 
         src={destination.image} 
         alt={destination.name} 
-        className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" 
+        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300" 
         onError={(e: any) => e.target.src = 'https://placehold.co/800x600?text=Destination'} 
       />
       
       {/* Gradient Overlay - Always visible but deepens on hover */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
 
-      <div className="absolute bottom-0 left-0 w-full p-6 md:p-8 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+      <div className="absolute bottom-0 left-0 w-full p-6 md:p-8 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
         {/* Floating Tag - Visible on Hover */}
-        <div className="absolute -top-12 left-8 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+        <div className="absolute -top-12 left-8 opacity-0 group-hover:opacity-100 transition-all duration-300 delay-100">
            <span className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-white/30 flex items-center gap-2">
               <PackageIcon size={12} /> {packageCount} Packages
            </span>
@@ -2466,8 +2466,8 @@ const CreativeDestinationCard: React.FC<{ destination: Destination; size?: "norm
           {destination.name}
         </h3>
         
-        <div className="overflow-hidden max-h-0 group-hover:max-h-20 transition-all duration-500 ease-in-out">
-           <p className="text-gray-200 text-sm line-clamp-2 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
+        <div className="overflow-hidden max-h-0 group-hover:max-h-20 transition-all duration-300 ease-in-out">
+           <p className="text-gray-200 text-sm line-clamp-2 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">
              {destination.description}
            </p>
         </div>
@@ -2558,7 +2558,7 @@ const DestinationsPage = () => {
                  onClick={() => setFilter(cat.name)}
                  className={`flex items-center gap-2 px-6 py-2 rounded-full font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
                    filter === cat.name 
-                   ? 'bg-brand-green text-white shadow-lg transform scale-105' 
+                   ? 'bg-brand-green text-white shadow-lg' 
                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                  }`}
                >
@@ -2811,7 +2811,7 @@ const BlogPage = () => {
               <RevealOnScroll key={post.id} delay={idx * 100}>
                 <Link to={`/blog/${post.slug}`} className="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100 flex flex-col hover:-translate-y-1">
                   <div className="h-56 overflow-hidden rounded-t-xl">
-                    <img src={post.featured_image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <img src={post.featured_image} alt={post.title} className="w-full h-full object-cover transition-opacity duration-300" />
                   </div>
                   <div className="p-6 flex flex-col flex-grow">
                     <h3 className="text-xl font-bold text-gray-800 group-hover:text-brand-green transition-colors mb-2">{post.title}</h3>
