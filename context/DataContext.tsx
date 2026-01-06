@@ -24,7 +24,11 @@ const INITIAL_SETTINGS: SiteSettings = {
   email: CONTACT_INFO.email,
   address: CONTACT_INFO.address,
   whatsapp: CONTACT_INFO.whatsapp,
-  socials: { facebook: '#', instagram: '#', twitter: '#' },
+  socials: { 
+    facebook: 'https://www.facebook.com/profile.php?id=61585145977815&ref=1', 
+    instagram: '#', 
+    twitter: 'https://x.com/SkylineSavTours' 
+  },
   hero: {
     videoUrl: 'https://cdn.pixabay.com/video/2022/03/10/110362-687206285_large.mp4', 
     fallbackImage: 'https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?q=80&w=2067&auto=format&fit=crop',
